@@ -129,38 +129,38 @@ void rem_rounds()
         temp[15] = state_matrix[11];
         
 
-             for (int i=0;i<16;i++)
+             for (int i = 0; i < 16; i++)
             {
-                state_matrix[i]=temp[i];
+                state_matrix[i] = temp[i];
             }
     }
 
 
     void mix_columns(unsigned char* state_matrix)
     {
-        tmp[0] = (unsigned char)(mul2[state_matrix[0]] ^ mul3[state_matrix[1]] ^ state_matrix[2] ^ state_matrix[3]);
-        tmp[1] = (unsigned char)(state_matrix[0] ^ mul2[state_matrix[1]] ^ mul3[state_matrix[2]] ^ state_matrix[3]);
-        tmp[2] = (unsigned char)(state_matrix[0] ^ state_matrix[1] ^ mul2[state_matrix[2]] ^ mul3[state_matrix[3]]);
-        tmp[3] = (unsigned char)(mul3[state_matrix[0]] ^ state_matrix[1] ^ state_matrix[2] ^ mul2[state_matrix[3]]);
+        temp[0] = (unsigned char)(mul2[state_matrix[0]] ^ mul3[state_matrix[1]] ^ state_matrix[2] ^ state_matrix[3]);
+        temp[1] = (unsigned char)(state_matrix[0] ^ mul2[state_matrix[1]] ^ mul3[state_matrix[2]] ^ state_matrix[3]);
+        temp[2] = (unsigned char)(state_matrix[0] ^ state_matrix[1] ^ mul2[state_matrix[2]] ^ mul3[state_matrix[3]]);
+        temp[3] = (unsigned char)(mul3[state_matrix[0]] ^ state_matrix[1] ^ state_matrix[2] ^ mul2[state_matrix[3]]);
 
-        tmp[4] = (unsigned char)(mul2[state_matrix[4]] ^ mul3[state_matrix[5]] ^ state_matrix[6] ^ state_matrix[7]);
-        tmp[5] = (unsigned char)(state_matrix[4] ^ mul2[state_matrix[5]] ^ mul3[state_matrix[6]] ^ state_matrix[7]);
-        tmp[6] = (unsigned char)(state_matrix[4] ^ state_matrix[5] ^ mul2[state_matrix[6]] ^ mul3[state_matrix[7]]);
-        tmp[7] = (unsigned char)(mul3[state_matrix[4]] ^ state_matrix[5] ^ state_matrix[6] ^ mul2[state_matrix[7]]);
+        temp[4] = (unsigned char)(mul2[state_matrix[4]] ^ mul3[state_matrix[5]] ^ state_matrix[6] ^ state_matrix[7]);
+        temp[5] = (unsigned char)(state_matrix[4] ^ mul2[state_matrix[5]] ^ mul3[state_matrix[6]] ^ state_matrix[7]);
+        temp[6] = (unsigned char)(state_matrix[4] ^ state_matrix[5] ^ mul2[state_matrix[6]] ^ mul3[state_matrix[7]]);
+        temp[7] = (unsigned char)(mul3[state_matrix[4]] ^ state_matrix[5] ^ state_matrix[6] ^ mul2[state_matrix[7]]);
 
-        tmp[8] = (unsigned char)(mul2[state_matrix[8]] ^ mul3[state_matrix[9]] ^ state_matrix[10] ^ state_matrix[11]);
-        tmp[9] = (unsigned char)(state_matrix[8] ^ mul2[state_matrix[9]] ^ mul3[state_matrix[10]] ^ state_matrix[11]);
-        tmp[10] = (unsigned char)(state_matrix[8] ^ state_matrix[9] ^ mul2[state_matrix[10]] ^ mul3[state_matrix[11]]);
-        tmp[11] = (unsigned char)(mul3[state_matrix[8]] ^ state_matrix[9] ^ state_matrix[10] ^ mul2[state_matrix[11]]);
+        temp[8] = (unsigned char)(mul2[state_matrix[8]] ^ mul3[state_matrix[9]] ^ state_matrix[10] ^ state_matrix[11]);
+        temp[9] = (unsigned char)(state_matrix[8] ^ mul2[state_matrix[9]] ^ mul3[state_matrix[10]] ^ state_matrix[11]);
+        temp[10] = (unsigned char)(state_matrix[8] ^ state_matrix[9] ^ mul2[state_matrix[10]] ^ mul3[state_matrix[11]]);
+        temp[11] = (unsigned char)(mul3[state_matrix[8]] ^ state_matrix[9] ^ state_matrix[10] ^ mul2[state_matrix[11]]);
 
-        tmp[12] = (unsigned char)(mul2[state[12]] ^ mul3[state[13]] ^ state[14] ^ state[15]);
-        tmp[13] = (unsigned char)(state[12] ^ mul2[state[13]] ^ mul3[state[14]] ^ state[15]);
-        tmp[14] = (unsigned char)(state[12] ^ state[13] ^ mul2[state[14]] ^ mul3[state[15]]);
-        tmp[15] = (unsigned char)(mul3[state[12]] ^ state[13] ^ state[14] ^ mul2[state[15]]);
+        temp[12] = (unsigned char)(mul2[state_matrix[12]] ^ mul3[state_matrix[13]] ^ state_matrix[14] ^ state_matrix[15]);
+        temp[13] = (unsigned char)(state_matrix[12] ^ mul2[state_matrix[13]] ^ mul3[state_matrix[14]] ^ state_matrix[15]);
+        temp[14] = (unsigned char)(state_matrix[12] ^ state_matrix[13] ^ mul2[state_matrix[14]] ^ mul3[state_matrix[15]]);
+        temp[15] = (unsigned char)(mul3[state_matrix[12]] ^ state_matrix[13] ^ state_matrix[14] ^ mul2[state_matrix[15]]);
 
         for(int i = 0; i < 16; i++)
         {
-            state_matrix[i] = tmp[i]
+            state_matrix[i] = temp[i];
         }
     }
 

@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
@@ -21,11 +21,11 @@ int s_box[256] =
  ,0x8c ,0xa1 ,0x89 ,0x0d ,0xbf ,0xe6 ,0x42 ,0x68 ,0x41 ,0x99 ,0x2d ,0x0f ,0xb0 ,0x54 ,0xbb ,0x16};
 
 
-void aes_encrypt(unsigned char* message,unsigned char* key);
+    void aes_encrypt(unsigned char* message, unsigned char* key);
     void key_expand();
     void byte_sub(unsigned char* state_matrix);
     void shift_rows(unsigned char* state_matrix);             
-    void add_roundkey(unsigned char* state_matrix,unsigned char* roundkey);
+    void add_roundkey(unsigned char* state_matrix, unsigned char* roundkey);
     void mix_columns();
     void rem_rounds();
 
@@ -36,25 +36,25 @@ void aes_encrypt(unsigned char* message,unsigned char* key);
 
 int main(void)
 {
-    unsigned char message[]="message";
-    unsigned char key[]="key";
+    unsigned char message[] = "message";
+    unsigned char key[] = "key";
         aes_encrypt(message,key);
 
 }
 
 
-void aes_encrypt(unsigned char* message,unsigned char* key)
+void aes_encrypt (unsigned char* message, unsigned char* key)
 {
 
     unsigned char* state_matrix[16];
     
-        for(int i=0;i<16;i++)
+        for(int i = 0; i < 16; i++)
         {
             state_matrix[i] = message[i];
 
         }
     key_expand();
-    add_roundkey(state,key);
+    add_roundkey(state_matrix, key);
     rem_rounds();
 
 
@@ -65,16 +65,16 @@ void aes_encrypt(unsigned char* message,unsigned char* key)
     key_expand();
     add_roundkey();
     
-    for(int i=0;i<numberofrounds;i++)
+    for(int i = 0; i < numberofrounds; i++)
     {
-        byte_sub(state);
-        shift_rows(state);
+        byte_sub(state_matrix);
+        shift_rows(state_matrix);
         mix_columns();
-        add_roundkey(state,key);
+        add_roundkey(state_matrix,key);
     }
-        byte_sub(state);
-        shift_rows(state);
-        add_roundkey(state);
+        byte_sub(state_matrix);
+        shift_rows(state_matrix);
+        add_roundkey(state_matrix, key);
 }
 
     void key_expand()
@@ -94,11 +94,11 @@ void rem_rounds()
 
 
 
-    void byte_sub(unsigned char* state_matrix)
+    void byte_sub (unsigned char* state_matrix)
     {
-        for( int i=0;i<16;i++)
+        for( int i = 0; i < 16; i++)
         {
-            state_matrix[i]=s_box[state_matrix[i]];
+            state_matrix[i] = s_box[state_matrix[i]];
         }
     }
 
@@ -108,25 +108,25 @@ void rem_rounds()
     {
         unsigned char temp[16];
 
-        temp[0]=state_matrix[0];
-        temp[1]=state_matrix[5];
-        temp[2]=state_matrix[10];
-        temp[3]=state_matrix[15];
+        temp[0] = state_matrix[0];
+        temp[1] = state_matrix[5];
+        temp[2] = state_matrix[10];
+        temp[3] = state_matrix[15];
 
-        temp[4]=state_matrix[4];
-        temp[5]=state_matrix[9];
-        temp[6]=state_matrix[14];
-        temp[7]=state_matrix[3];
+        temp[4] = state_matrix[4];
+        temp[5] = state_matrix[9];
+        temp[6] = state_matrix[14];
+        temp[7] = state_matrix[3];
 
-        temp[8]=state_matrix[8];
-        temp[9]=state_matrix[13];
-        temp[10]=state_matrix[2];
-        temp[11]=state_matrix[7];
+        temp[8] = state_matrix[8];
+        temp[9] = state_matrix[13];
+        temp[10] = state_matrix[2];
+        temp[11] = state_matrix[7];
 
-        temp[12]=state_matrix[12];
-        temp[13]=state_matrix[1];
-        temp[14]=state_matrix[6];
-        temp[15]=state_matrix[11];
+        temp[12] = state_matrix[12];
+        temp[13] = state_matrix[1];
+        temp[14] = state_matrix[6];
+        temp[15] = state_matrix[11];
         
 
              for (int i=0;i<16;i++)
@@ -136,15 +136,38 @@ void rem_rounds()
     }
 
 
-    void mix_columns()
+    void mix_columns(unsigned char* state_matrix)
     {
+        tmp[0] = (unsigned char)(mul2[state_matrix[0]] ^ mul3[state_matrix[1]] ^ state_matrix[2] ^ state_matrix[3]);
+        tmp[1] = (unsigned char)(state_matrix[0] ^ mul2[state_matrix[1]] ^ mul3[state_matrix[2]] ^ state_matrix[3]);
+        tmp[2] = (unsigned char)(state_matrix[0] ^ state_matrix[1] ^ mul2[state_matrix[2]] ^ mul3[state_matrix[3]]);
+        tmp[3] = (unsigned char)(mul3[state_matrix[0]] ^ state_matrix[1] ^ state_matrix[2] ^ mul2[state_matrix[3]]);
 
+        tmp[4] = (unsigned char)(mul2[state_matrix[4]] ^ mul3[state_matrix[5]] ^ state_matrix[6] ^ state_matrix[7]);
+        tmp[5] = (unsigned char)(state_matrix[4] ^ mul2[state_matrix[5]] ^ mul3[state_matrix[6]] ^ state_matrix[7]);
+        tmp[6] = (unsigned char)(state_matrix[4] ^ state_matrix[5] ^ mul2[state_matrix[6]] ^ mul3[state_matrix[7]]);
+        tmp[7] = (unsigned char)(mul3[state_matrix[4]] ^ state_matrix[5] ^ state_matrix[6] ^ mul2[state_matrix[7]]);
+
+        tmp[8] = (unsigned char)(mul2[state_matrix[8]] ^ mul3[state_matrix[9]] ^ state_matrix[10] ^ state_matrix[11]);
+        tmp[9] = (unsigned char)(state_matrix[8] ^ mul2[state_matrix[9]] ^ mul3[state_matrix[10]] ^ state_matrix[11]);
+        tmp[10] = (unsigned char)(state_matrix[8] ^ state_matrix[9] ^ mul2[state_matrix[10]] ^ mul3[state_matrix[11]]);
+        tmp[11] = (unsigned char)(mul3[state_matrix[8]] ^ state_matrix[9] ^ state_matrix[10] ^ mul2[state_matrix[11]]);
+
+        tmp[12] = (unsigned char)(mul2[state[12]] ^ mul3[state[13]] ^ state[14] ^ state[15]);
+        tmp[13] = (unsigned char)(state[12] ^ mul2[state[13]] ^ mul3[state[14]] ^ state[15]);
+        tmp[14] = (unsigned char)(state[12] ^ state[13] ^ mul2[state[14]] ^ mul3[state[15]]);
+        tmp[15] = (unsigned char)(mul3[state[12]] ^ state[13] ^ state[14] ^ mul2[state[15]]);
+
+        for(int i = 0; i < 16; i++)
+        {
+            state_matrix[i] = tmp[i]
+        }
     }
 
 
-    void add_roundkey(unsigned char* state_matrix,unsigned char* roundkey)
+    void add_roundkey (unsigned char* state_matrix,unsigned char* roundkey)
     {
-        for(int i=0;i<16;i++)
+        for(int i = 0; i < 16; i++)
         {
             state_matrix[i] ^= roundkey[i];
         }

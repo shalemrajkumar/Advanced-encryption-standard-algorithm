@@ -85,7 +85,7 @@ unsigned char rcon[256] = {
     void add_roundkey(unsigned char* state_matrix, unsigned char* roundkey);
     void mix_columns();
     void rem_rounds();
-    void key_expand(unsigned char *inputkey[16], unsigned char* expandedkeys[176]);
+    void key_expand(unsigned char *inputkey, unsigned char* expandedkeys);
     void key_expansion_main(unsigned char *in, unsigned char i);
 
 int main(void)
@@ -101,38 +101,37 @@ int main(void)
 void aes_encrypt (unsigned char* message, unsigned char* key)
 {
 
-    unsigned char* state_matrix[16];
+    unsigned char state_matrix[16];
     
         for(int i = 0; i < 16; i++)
         {
             state_matrix[i] = message[i];
 
         }
-    key_expand();
+
+    int numberofrounds = 9;
+    unsigned char expandedkey[176];
+    key_expand(key, expandedkey);
     add_roundkey(state_matrix, key);
-    rem_rounds();
-
-
-
-    key_expand(unsigned char *inputkey, unsigned char* expandedkeys);
-
-    int numberofrounds = 10;
-    key_expand();
-    add_roundkey();
     
     for(int i = 0; i < numberofrounds; i++)
     {
         byte_sub(state_matrix);
         shift_rows(state_matrix);
         mix_columns();
-        add_roundkey(state_matrix,key);
+        add_roundkey(state_matrix,expandedkey + (16 * (i + 1)));
     }
         byte_sub(state_matrix);
         shift_rows(state_matrix);
-        add_roundkey(state_matrix, key);
+        add_roundkey(state_matrix, expandedkey + 160);
+        // overwriting encrypted message 
+        for(int i = 0; i < 16; i++)
+        {
+            message[i] = state_matrix[i];
+        }
 }
 
-void key_expand(unsigned char *inputkey[16], unsigned char* expandedkeys[176])
+void key_expand(unsigned char *inputkey, unsigned char* expandedkeys)
 {
     for(int i = 0; i < 16; i++)
     {
@@ -147,13 +146,19 @@ void key_expand(unsigned char *inputkey[16], unsigned char* expandedkeys[176])
     {
         for (int j = 0; j < 4; j++)
         {
-            temp[i] = expandedkeys[i + bytes_gen - 4];
+            temp[j] = expandedkeys[j + bytes_gen - 4];
         }
     }
     if(bytes_gen % 16 == 0)
     {
         key_expansion_main(temp, rcon_temp);
         rcon_temp++;
+    }
+
+    for(unsigned char a = 0; a < 4; a++)
+    {
+        expandedkeys[bytes_gen] = expandedkeys[bytes_gen - 16] ^ temp[a];
+        bytes_gen++;
     }
 }
 
@@ -227,6 +232,8 @@ void key_expansion_main(unsigned char *in, unsigned char i)
 
     void mix_columns(unsigned char* state_matrix)
     {
+        unsigned char temp[16];
+        
         temp[0] = (unsigned char)(mul2[state_matrix[0]] ^ mul3[state_matrix[1]] ^ state_matrix[2] ^ state_matrix[3]);
         temp[1] = (unsigned char)(state_matrix[0] ^ mul2[state_matrix[1]] ^ mul3[state_matrix[2]] ^ state_matrix[3]);
         temp[2] = (unsigned char)(state_matrix[0] ^ state_matrix[1] ^ mul2[state_matrix[2]] ^ mul3[state_matrix[3]]);
